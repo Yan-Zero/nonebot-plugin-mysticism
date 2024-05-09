@@ -8,9 +8,9 @@ __plugin_meta__ = PluginMetadata(
     description="虽然现在只有塔罗派相关的工具喵",
     usage="""相关指令：
 /tarot [formations]
-/face [type]
+/s.tarot [type]
 """,
-    homepage="https://github.com/Perseus037/nonebot_plugin_batarot",
+    homepage="https://github.com/Yan-Zero/nonebot_plugin_mysticism",
     type="application",
     config=None,
     supported_adapters=["~onebot.v11"],
