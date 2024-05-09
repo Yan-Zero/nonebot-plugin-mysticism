@@ -72,16 +72,19 @@ formations:
         - 与对方结识的因缘
         - 双方关系的发展
         - 双方关系的结论
-  沙迪若之星牌阵:
-    cards_num: 6
-    is_cut: true
+  档案馆牌阵:
+    cards_num: 9
+    is_cut: false
     representations:
-      - - 问卜者的感受
-        - 问卜者的问题
-        - 问题下的影响因素
-        - 将问卜者与问题纠缠在一起的往事
-        - 需要注意/考虑的
-        - 可能的结果
+      - - 分析1
+        - 分析2
+        - 分析3
+        - 预言1
+        - 预言2
+        - 预言3
+        - 改变方向1
+        - 改变方向2
+        - 改变方向3
   灵魂之旅牌阵:
     cards_num: 5
     is_cut: false
@@ -148,7 +151,7 @@ alias:
   horseshoe: 马蹄牌阵
   star: 六芒星牌阵
   peace: 平安扇牌阵
-  shadow: 沙迪若之星牌阵
+  fengxue: 档案馆牌阵
   soul: 灵魂之旅牌阵
   tree: 生命之树牌阵
   guide: 星光指引牌阵
