@@ -90,7 +90,7 @@ async def _(bot: Bot, event, state: T_State, nums=ArgPlainText()):
             postfix = f"「{tarot_uitls.CN_Name[_id]} 逆位」"
 
         image = BytesIO()
-        img.save(image, "PNG")
+        img.convert("RGB").save(image, "JPEG")
         content.append(V11Seg.image(image))
         content.append(V11Seg.text(postfix))
 
@@ -144,6 +144,6 @@ async def _(bot: Bot, args=CommandArg()):
         img = img.transpose(Image.ROTATE_180)
         postfix = f"「{tarot_uitls.CN_Name[_id]} 逆位」"
     image = BytesIO()
-    img.save(image, "PNG")
+    img.convert("RGB").save(image, "JPGE")
 
     await s_tarot.finish([V11Seg.image(image), V11Seg.text(postfix)])
