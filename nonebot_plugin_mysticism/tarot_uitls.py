@@ -400,3 +400,7 @@ CN_Name = {
     "major.judgement": "审判",
     "major.world": "世界",
 }
+
+TAROT_KEYWORDS = {}
+with open(pathlib.Path(__file__).parent / "tarot_keywords.yml", encoding="utf-8") as f:
+    TAROT_KEYWORDS = yaml.load(f, yaml.FullLoader)
