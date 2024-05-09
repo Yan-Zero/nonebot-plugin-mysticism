@@ -231,13 +231,13 @@ DEFAULT["pentacles"] = BILIBILI.pentacles
 DEFAULT["swords"] = BILIBILI.swords
 DEFAULT["wands"] = BILIBILI.wands
 
-TOUHOU = get_tarot(pathlib.Path(__file__).parent / "tarot_theme" / "touhou.yaml")
+WAITE = get_tarot(pathlib.Path(__file__).parent / "tarot_theme" / "waite.yaml")
 BULE_ARCHIVE = get_tarot(
     pathlib.Path(__file__).parent / "tarot_theme" / "blue_archive.yaml"
 )
 
 
-THEME = [BILIBILI, BULE_ARCHIVE, TOUHOU]
+THEME = [BILIBILI, BULE_ARCHIVE, WAITE]
 
 TAROT_STACK = [
     "cups.ace",
