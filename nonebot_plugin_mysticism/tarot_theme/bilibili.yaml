@@ -1,0 +1,90 @@
+name: bilibili
+prefix: https://cdn.jsdelivr.net/gh/MinatoAquaCrews/nonebot_plugin_tarot@master/nonebot_plugin_tarot/resource/BilibiliTarot/
+# url 前缀
+cups:
+- Cups/%E5%9C%A3%E6%9D%AF-01.png
+- Cups/%E5%9C%A3%E6%9D%AF-02.png
+- Cups/%E5%9C%A3%E6%9D%AF-03.png
+- Cups/%E5%9C%A3%E6%9D%AF-04.png
+- Cups/%E5%9C%A3%E6%9D%AF-05.png
+- Cups/%E5%9C%A3%E6%9D%AF-06.png
+- Cups/%E5%9C%A3%E6%9D%AF-07.png
+- Cups/%E5%9C%A3%E6%9D%AF-08.png
+- Cups/%E5%9C%A3%E6%9D%AF-09.png
+- Cups/%E5%9C%A3%E6%9D%AF-10.png
+- Cups/%E5%9C%A3%E6%9D%AF%E4%BE%8D%E4%BB%8E.png
+- Cups/%E5%9C%A3%E6%9D%AF%E9%AA%91%E5%A3%AB.png
+- Cups/%E5%9C%A3%E6%9D%AF%E7%9A%87%E5%90%8E.png
+- Cups/%E5%9C%A3%E6%9D%AF%E5%9B%BD%E7%8E%8B.png
+
+pentacles:
+- Pentacles/%E6%98%9F%E5%B8%81-01.png
+- Pentacles/%E6%98%9F%E5%B8%81-02.png
+- Pentacles/%E6%98%9F%E5%B8%81-03.png
+- Pentacles/%E6%98%9F%E5%B8%81-04.png
+- Pentacles/%E6%98%9F%E5%B8%81-05.png
+- Pentacles/%E6%98%9F%E5%B8%81-06.png
+- Pentacles/%E6%98%9F%E5%B8%81-07.png
+- Pentacles/%E6%98%9F%E5%B8%81-08.png
+- Pentacles/%E6%98%9F%E5%B8%81-09.png
+- Pentacles/%E6%98%9F%E5%B8%81-10.png
+- Pentacles/%E6%98%9F%E5%B8%81%E4%BE%8D%E4%BB%8E.png
+- Pentacles/%E6%98%9F%E5%B8%81%E9%AA%91%E5%A3%AB.png
+- Pentacles/%E6%98%9F%E5%B8%81%E7%9A%87%E5%90%8E.png
+- Pentacles/%E6%98%9F%E5%B8%81%E5%9B%BD%E7%8E%8B.png
+
+wands:
+- Wands/%E6%9D%83%E6%9D%96-01.png
+- Wands/%E6%9D%83%E6%9D%96-02.png
+- Wands/%E6%9D%83%E6%9D%96-03.png
+- Wands/%E6%9D%83%E6%9D%96-04.png
+- Wands/%E6%9D%83%E6%9D%96-05.png
+- Wands/%E6%9D%83%E6%9D%96-06.png
+- Wands/%E6%9D%83%E6%9D%96-07.png
+- Wands/%E6%9D%83%E6%9D%96-08.png
+- Wands/%E6%9D%83%E6%9D%96-09.png
+- Wands/%E6%9D%83%E6%9D%96-10.png
+- Wands/%E6%9D%83%E6%9D%96%E4%BE%8D%E4%BB%8E.png
+- Wands/%E6%9D%83%E6%9D%96%E9%AA%91%E5%A3%AB.png
+- Wands/%E6%9D%83%E6%9D%96%E7%9A%87%E5%90%8E.png
+- Wands/%E6%9D%83%E6%9D%96%E5%9B%BD%E7%8E%8B.png
+
+swords:
+- Swords/%E5%AE%9D%E5%89%91-01.png
+- Swords/%E5%AE%9D%E5%89%91-02.png
+- Swords/%E5%AE%9D%E5%89%91-03.png
+- Swords/%E5%AE%9D%E5%89%91-04.png
+- Swords/%E5%AE%9D%E5%89%91-05.png
+- Swords/%E5%AE%9D%E5%89%91-06.png
+- Swords/%E5%AE%9D%E5%89%91-07.png
+- Swords/%E5%AE%9D%E5%89%91-08.png
+- Swords/%E5%AE%9D%E5%89%91-09.png
+- Swords/%E5%AE%9D%E5%89%91-10.png
+- Swords/%E5%AE%9D%E5%89%91%E4%BE%8D%E4%BB%8E.png
+- Swords/%E5%AE%9D%E5%89%91%E9%AA%91%E5%A3%AB.png
+- Swords/%E5%AE%9D%E5%89%91%E7%9A%87%E5%90%8E.png
+- Swords/%E5%AE%9D%E5%89%91%E5%9B%BD%E7%8E%8B.png
+
+major_arcana:
+- MajorArcana/0-%E6%84%9A%E8%80%85.png
+- MajorArcana/01-%E9%AD%94%E6%9C%AF%E5%B8%88.png
+- MajorArcana/02-%E5%A5%B3%E7%A5%AD%E5%8F%B8.png
+- MajorArcana/03-%E5%A5%B3%E7%9A%87.png
+- MajorArcana/04-%E7%9A%87%E5%B8%9D.png
+- MajorArcana/05-%E6%95%99%E7%9A%87.png
+- MajorArcana/06-%E6%81%8B%E4%BA%BA.png
+- MajorArcana/07-%E6%88%98%E8%BD%A6.png
+- MajorArcana/08-%E5%8A%9B%E9%87%8F.png
+- MajorArcana/09-%E9%9A%90%E5%A3%AB.png
+- MajorArcana/10-%E5%91%BD%E8%BF%90%E4%B9%8B%E8%BD%AE.png
+- MajorArcana/11-%E6%AD%A3%E4%B9%89.png
+- MajorArcana/12-%E5%80%92%E5%90%8A%E4%BA%BA.png
+- MajorArcana/13-%E6%AD%BB%E7%A5%9E.png
+- MajorArcana/14-%E8%8A%82%E5%88%B6.png
+- MajorArcana/15-%E6%81%B6%E9%AD%94.png
+- MajorArcana/16-%E9%AB%98%E5%A1%94.png
+- MajorArcana/17-%E6%98%9F%E6%98%9F.png
+- MajorArcana/18-%E6%9C%88%E4%BA%AE.png
+- MajorArcana/19-%E5%A4%AA%E9%98%B3.png
+- MajorArcana/20-%E5%AE%A1%E5%88%A4.png
+- MajorArcana/21-%E4%B8%96%E7%95%8C.png
