@@ -1,10 +1,7 @@
 import yaml
 import pathlib
 import random
-from nonebot import get_plugin_config
-from nonebot.adapters import Bot, Event
-from nonebot.internal.permission import Permission
-from nonebot.adapters.onebot.v11.event import GroupMessageEvent as V11G
+from nonebot.adapters import Bot
 from PIL import Image
 from nonebot import on_command
 from nonebot.params import CommandArg
@@ -14,10 +11,9 @@ from nonebot.adapters.onebot.v11.message import MessageSegment as V11Seg
 from nonebot.internal.adapter import Bot
 from nonebot.matcher import Matcher
 from nonebot.typing import T_State
-from .config import Config
+from io import BytesIO
 from .utils import send_image_as_bytes
 from . import tarot_uitls
-
 
 FORMATIONS = None
 FORMATIONS_ALIAS = None
@@ -28,30 +24,8 @@ with open(
     FORMATIONS = data["formations"]
     FORMATIONS_ALIAS = data["alias"]
 
-config = get_plugin_config(Config)
-
-
-class BlackGroup(Permission):
-
-    __slots__ = ()
-
-    def __repr__(self) -> str:
-        return "BlackGroup()"
-
-    async def __call__(self, bot: Bot, event: Event) -> bool:
-        if not isinstance(event, V11G):
-            return True
-        try:
-            group_id = str(event.group_id)
-        except Exception:
-            return True
-        return group_id not in config.black_group
-
-
-BLACK_GROUP = Permission(BlackGroup())
-
+s_tarot = on_command("s.tarot", priority=5, block=True, force_whitespace=True)
 tarot = on_command("tarot", priority=5, block=True, force_whitespace=True)
-# /tarot [formations]
 
 
 @tarot.handle()
@@ -89,7 +63,7 @@ async def _(bot: Bot, event, state: T_State, nums=ArgPlainText()):
         nums = list(
             filter(
                 lambda x: x not in state["cnumber"],
-                map(lambda x: (x - 1 % 78) + 1, map(int, nums.split())),
+                map(lambda x: x % 78, map(int, nums.split())),
             )
         )
     except Exception as ex:
@@ -110,12 +84,14 @@ async def _(bot: Bot, event, state: T_State, nums=ArgPlainText()):
         content = [V11Seg.text(f"第{i+1}张牌「{representations[i]}」\n")]
         _id = state["stack_card"][state["cnumber"][i]]
         img = Image.open(await send_image_as_bytes(state["tarot_theme"][_id].face_url))
-
         postfix = f"「{tarot_uitls.CN_Name[_id]} 正位」"
         if random.randint(0, 1) == 1:
-            img.transpose(Image.ROTATE_180)
+            img = img.transpose(Image.ROTATE_180)
             postfix = f"「{tarot_uitls.CN_Name[_id]} 逆位」"
-        content.append(V11Seg.image(img.tobytes()))
+
+        image = BytesIO()
+        img.save(image, "PNG")
+        content.append(V11Seg.image(image))
         content.append(V11Seg.text(postfix))
 
         message.append(
@@ -123,7 +99,7 @@ async def _(bot: Bot, event, state: T_State, nums=ArgPlainText()):
                 "type": "node",
                 "data": {
                     "uin": str(event.get_user_id()),
-                    "name": representations[i],
+                    "name": postfix,
                     "content": content,
                 },
             },
@@ -132,3 +108,42 @@ async def _(bot: Bot, event, state: T_State, nums=ArgPlainText()):
     random.seed()
     res_id = await bot.call_api("send_forward_msg", messages=message)
     await tarot.finish(V11Seg.forward(res_id))
+
+
+NUM2ID = {
+    "0": "major",
+    "1": "cups",
+    "2": "pentacles",
+    "3": "swords",
+    "4": "wands",
+    "major": "major",
+    "cups": "cups",
+    "pentacles": "pentacles",
+    "swords": "swords",
+    "wands": "wands",
+}
+
+
+@s_tarot.handle()
+async def _(bot: Bot, args=CommandArg()):
+    args = args.extract_plain_text().strip()
+    try:
+        args = NUM2ID.get(args, "")
+    except:
+        args = ""
+
+    _list = list(filter(lambda x: x.startswith(args), tarot_uitls.TAROT_STACK))
+    if len(_list) <= 0:
+        _list = tarot_uitls.TAROT_STACK
+    _id = random.choice(_list)
+
+    theme = random.choice(tarot_uitls.THEME)
+    img = Image.open(await send_image_as_bytes(theme[_id].face_url))
+    postfix = f"「{tarot_uitls.CN_Name[_id]} 正位」"
+    if random.randint(0, 1) == 1:
+        img = img.transpose(Image.ROTATE_180)
+        postfix = f"「{tarot_uitls.CN_Name[_id]} 逆位」"
+    image = BytesIO()
+    img.save(image, "PNG")
+
+    await s_tarot.finish([V11Seg.image(image), V11Seg.text(postfix)])
