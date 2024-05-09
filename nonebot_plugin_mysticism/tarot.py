@@ -74,9 +74,12 @@ async def _(bot: Bot, event, state: T_State, nums=ArgPlainText()):
             f"似乎，这些不只是数字……\n你还得再输入 {state['cards_num']} 个数字"
         )
 
-    if state["formations"]["cards_num"] > len(state["cnumber"]):
-        await tarot.reject(f"你还得再输入 {state['cards_num']} 个数字")
+    if state["cards_num"] > len(state["cnumber"]):
+        await tarot.reject(
+            f"你还得再输入 {state['cards_num']-len(state['cnumber'])} 个数字"
+        )
 
+    await tarot.send("🔮占卜ing……\n请坐与放宽……")
     formation = state["formations"]
     random.seed(sum(state["cnumber"]) + random.random())
     representations = random.choice(formation.get("representations"))
@@ -85,7 +88,10 @@ async def _(bot: Bot, event, state: T_State, nums=ArgPlainText()):
     for i in range(formation["cards_num"]):
         content = [V11Seg.text(f"第{i+1}张牌「{representations[i]}」\n")]
         _id = state["stack_card"][state["cnumber"][i]]
-        img = Image.open(await send_image_as_bytes(state["tarot_theme"][_id].face_url))
+        img = await send_image_as_bytes(state["tarot_theme"][_id].face_url)
+        if not img:
+            await tarot.finish(f"网络异常喵。\n主题名字：{state["tarot_theme"].name}" )
+        img = Image.open(img)
         if random.randint(0, 1) == 1:
             img = img.transpose(Image.ROTATE_180)
             postfix = f"「{tarot_uitls.CN_Name[_id]} 逆位」"
