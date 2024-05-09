@@ -7,6 +7,7 @@ from nonebot import on_command
 from nonebot.params import CommandArg
 from nonebot.params import ArgPlainText
 from nonebot.adapters.onebot.v11.message import Message as V11Msg
+from nonebot.adapters.onebot.v11.event import GroupMessageEvent as V11G
 from nonebot.adapters.onebot.v11.message import MessageSegment as V11Seg
 from nonebot.internal.adapter import Bot
 from nonebot.matcher import Matcher
@@ -106,8 +107,15 @@ async def _(bot: Bot, event, state: T_State, nums=ArgPlainText()):
         )
 
     random.seed()
-    res_id = await bot.call_api("send_forward_msg", messages=message)
-    await tarot.finish(V11Seg.forward(res_id))
+    # group
+    if isinstance(event, V11G):
+        await bot.call_api(
+            "send_group_forward_msg", group_id=event.group_id, messages=message
+        )
+    else:
+        await tarot.finish(
+            V11Seg.forward(await bot.call_api("send_forward_msg", messages=message))
+        )
 
 
 NUM2ID = {
@@ -144,6 +152,6 @@ async def _(bot: Bot, args=CommandArg()):
         img = img.transpose(Image.ROTATE_180)
         postfix = f"「{tarot_uitls.CN_Name[_id]} 逆位」"
     image = BytesIO()
-    img.convert("RGB").save(image, "JPGE")
+    img.convert("RGB").save(image, "JPEG")
 
     await s_tarot.finish([V11Seg.image(image), V11Seg.text(postfix)])
