@@ -14,20 +14,10 @@ from nonebot.matcher import Matcher
 from nonebot.typing import T_State
 from io import BytesIO
 
-from .utils import send_image_as_bytes
 from .config import Config
 from . import tarot_uitls
 
 p_config = get_plugin_config(Config)
-
-FORMATIONS = None
-FORMATIONS_ALIAS = None
-with open(
-    pathlib.Path(__file__).parent / "tarot_formations.yaml", encoding="utf-8"
-) as f:
-    data = yaml.load(f, yaml.FullLoader)
-    FORMATIONS = data["formations"]
-    FORMATIONS_ALIAS = data["alias"]
 
 s_tarot = on_command("s.tarot", priority=5, block=True, force_whitespace=True)
 tarot = on_command("tarot", priority=5, block=True, force_whitespace=True)
@@ -37,14 +27,14 @@ tarot = on_command("tarot", priority=5, block=True, force_whitespace=True)
 async def _(bot: Bot, matcher: Matcher, state: T_State, args=CommandArg()):
     result = ""
     if formations := args.extract_plain_text().strip():
-        if formations in FORMATIONS_ALIAS:
-            formations = FORMATIONS_ALIAS[formations]
+        if formations in tarot_uitls.FORMATIONS_ALIAS:
+            formations = tarot_uitls.FORMATIONS_ALIAS[formations]
 
-    if formations not in FORMATIONS:
-        formations = random.choice(list(FORMATIONS.keys()))
+    if formations not in tarot_uitls.FORMATIONS:
+        formations = random.choice(list(tarot_uitls.FORMATIONS.keys()))
         result = "牌阵没有找到喵。\n"
 
-    state["formations"] = FORMATIONS[formations]
+    state["formations"] = tarot_uitls.FORMATIONS[formations]
     state["cards_num"] = state["formations"]["cards_num"]
     state["cnumber"] = []
     state["tarot_theme"] = tarot_uitls.THEME.get(
@@ -67,10 +57,11 @@ async def _(bot: Bot, event, state: T_State, nums=ArgPlainText()):
         tarot.finish("已取消占卜🔮")
     try:
         sep = None
-        if "," in nums:
-            sep = ","
-        elif "." in nums:
-            sep = "."
+        for i in [",", ".", "，", "。"]:
+            if i in nums:
+                sep = i
+                break
+
         for i in map(lambda x: x % 78, map(int, nums.split(sep=sep))):
             if i in state["cnumber"]:
                 continue
@@ -94,7 +85,7 @@ async def _(bot: Bot, event, state: T_State, nums=ArgPlainText()):
     for i in range(formation["cards_num"]):
         content = [V11Seg.text(f"第{i+1}张牌「{representations[i]}」\n")]
         _id = state["stack_card"][state["cnumber"][i]]
-        img = await send_image_as_bytes(state["tarot_theme"][_id].face_url)
+        img = await tarot_uitls.send_image_as_bytes(state["tarot_theme"][_id].face_url)
         if not img:
             await tarot.finish(f"网络异常喵。\n主题名字：{state['tarot_theme'].name}")
         img = Image.open(img)
@@ -186,7 +177,7 @@ async def _(bot: Bot, args=CommandArg()):
         p_config.tarot_theme, random.choice(tarot_uitls.THEME)
     )
     theme = random.choice(tarot_uitls.THEME)
-    img = Image.open(await send_image_as_bytes(theme[_id].face_url))
+    img = Image.open(await tarot_uitls.send_image_as_bytes(theme[_id].face_url))
     postfix = f"「{tarot_uitls.CN_Name[_id]} 正位」"
     if random.randint(0, 1) == 1:
         img = img.transpose(Image.ROTATE_180)

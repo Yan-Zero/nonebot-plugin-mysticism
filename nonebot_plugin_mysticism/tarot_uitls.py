@@ -1,7 +1,11 @@
+from io import BytesIO
 import urllib.parse
 import yaml
 import pathlib
 import urllib
+import aiohttp
+import hashlib
+import tempfile
 
 
 class Card:
@@ -402,5 +406,47 @@ CN_Name = {
 }
 
 TAROT_KEYWORDS = {}
-with open(pathlib.Path(__file__).parent / "tarot_keywords.yml", encoding="utf-8") as f:
+with open(
+    pathlib.Path(__file__).parent / "tarot_dict" / "tarot_keywords.yml",
+    encoding="utf-8",
+) as f:
     TAROT_KEYWORDS = yaml.load(f, yaml.FullLoader)
+
+
+FORMATIONS = None
+FORMATIONS_ALIAS = None
+with open(
+    pathlib.Path(__file__).parent / "tarot_dict" / "tarot_formations.yaml",
+    encoding="utf-8",
+) as f:
+    data = yaml.load(f, yaml.FullLoader)
+    FORMATIONS = data["formations"]
+    FORMATIONS_ALIAS = data["alias"]
+
+
+# 返回BytesIO对象图片
+async def send_image_as_bytes(url: str, cache: bool = True):
+    if cache:
+        path = pathlib.Path(tempfile.gettempdir()) / "tarot"
+        if not path.exists():
+            path.mkdir()
+        path /= hashlib.sha256(url.encode()).hexdigest()
+
+        if path.exists():
+            with open(path, mode="rb") as f:
+                buffered = BytesIO(f.read())
+                buffered.seek(0)
+                return buffered
+
+    async with aiohttp.ClientSession() as session:
+        async with session.get(url) as response:
+            if response.status == 200:
+                image_data = await response.read()
+                if cache:
+                    with open(path, mode="wb+") as f:
+                        f.write(image_data)
+                buffered = BytesIO(image_data)
+                buffered.seek(0)
+                return buffered
+            else:
+                return None
