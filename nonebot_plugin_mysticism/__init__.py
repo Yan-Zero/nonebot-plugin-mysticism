@@ -1,5 +1,6 @@
-from nonebot import get_driver
 from nonebot.plugin import PluginMetadata
+
+from .config import Config
 from .tarot import tarot
 
 __version__ = "0.1.1"
@@ -12,6 +13,6 @@ __plugin_meta__ = PluginMetadata(
 """,
     homepage="https://yan-zero.github.io/docs/coffee/mysticism",
     type="application",
-    config=None,
+    config=Config,
     supported_adapters=["~onebot.v11"],
 )

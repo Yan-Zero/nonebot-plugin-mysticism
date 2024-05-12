@@ -1,20 +1,24 @@
 import yaml
 import pathlib
 import random
+from nonebot import get_plugin_config
 from nonebot.adapters import Bot
 from PIL import Image
 from nonebot import on_command
 from nonebot.params import CommandArg
 from nonebot.params import ArgPlainText
-from nonebot.adapters.onebot.v11.message import Message as V11Msg
 from nonebot.adapters.onebot.v11.event import GroupMessageEvent as V11G
 from nonebot.adapters.onebot.v11.message import MessageSegment as V11Seg
 from nonebot.internal.adapter import Bot
 from nonebot.matcher import Matcher
 from nonebot.typing import T_State
 from io import BytesIO
+
 from .utils import send_image_as_bytes
+from .config import Config
 from . import tarot_uitls
+
+p_config = get_plugin_config(Config)
 
 FORMATIONS = None
 FORMATIONS_ALIAS = None
@@ -43,7 +47,9 @@ async def _(bot: Bot, matcher: Matcher, state: T_State, args=CommandArg()):
     state["formations"] = FORMATIONS[formations]
     state["cards_num"] = state["formations"]["cards_num"]
     state["cnumber"] = []
-    state["tarot_theme"] = random.choice(tarot_uitls.THEME)
+    state["tarot_theme"] = tarot_uitls.THEME.get(
+        p_config.tarot_theme, random.choice(tarot_uitls.THEME)
+    )
     state["stack_card"] = tarot_uitls.TAROT_STACK.copy()
     random.shuffle(state["stack_card"])
     # 先洗牌更有仪式感（x）
@@ -71,7 +77,7 @@ async def _(bot: Bot, event, state: T_State, nums=ArgPlainText()):
             state["cnumber"].append(i)
     except:
         await tarot.reject(
-            f"似乎，这些不只是数字……\n你还得再输入 {state['cards_num']} 个数字"
+            f"似乎，这些不只是数字……\n你还得再输入 {state['cards_num']-len(state['cnumber'])} 个数字"
         )
 
     if state["cards_num"] > len(state["cnumber"]):
@@ -176,7 +182,9 @@ async def _(bot: Bot, args=CommandArg()):
     _id = random.choice(
         list(filter(lambda x: x.startswith(args), tarot_uitls.TAROT_STACK))
     )
-
+    theme = tarot_uitls.THEME.get(
+        p_config.tarot_theme, random.choice(tarot_uitls.THEME)
+    )
     theme = random.choice(tarot_uitls.THEME)
     img = Image.open(await send_image_as_bytes(theme[_id].face_url))
     postfix = f"「{tarot_uitls.CN_Name[_id]} 正位」"

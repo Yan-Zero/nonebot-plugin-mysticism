@@ -237,7 +237,7 @@ BULE_ARCHIVE = get_tarot(
 )
 
 
-THEME = [BILIBILI, BULE_ARCHIVE, WAITE]
+THEME = {v.name: v for v in [BILIBILI, BULE_ARCHIVE, WAITE]}
 
 TAROT_STACK = [
     "cups.ace",
